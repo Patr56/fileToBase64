@@ -13,7 +13,20 @@ function reqListener () {
     console.log(reader.readAsDataURL(blob));
 }
 
-buttonEl.onclick = function () {
-    oReq.open("GET", "test.pdf");
+var linkEl = document.getElementById('link');
+
+
+linkEl.onclick = function (event) {
+    event.preventDefault();
+    magicDownload(this.href);
+    return false;
+};
+
+function magicDownload(filePath) {
+    oReq.open("GET", filePath);
     oReq.send();
+}
+
+buttonEl.onclick = function () {
+    magicDownload('test.pdf');
 };
