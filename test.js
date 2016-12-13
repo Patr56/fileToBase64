@@ -1,16 +1,36 @@
 var buttonEl = document.getElementById('button');
+var preEl = document.getElementById('pre');
+var pre2El = document.getElementById('pre2');
 
 var oReq = new XMLHttpRequest();
 oReq.addEventListener("load", reqListener);
 
-var reader  = new FileReader();
-reader.onloadend = function () {
-    console.log(reader.result);
-};
+/**
+ * method 1
+ * @param str
+ * @return {string}
+ */
+function b64EncodeUnicode2(str) {
+    return window.btoa((encodeURIComponent(str)));
+}
+
+/**
+ * method 2
+ * @param str
+ * @return {string}
+ */
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}
 
 function reqListener () {
-    var blob = new Blob ([this.responseText]);
-    console.log(reader.readAsDataURL(blob));
+    var encodedData = b64EncodeUnicode(this.responseText); // encode a string
+    var encodedData2 = b64EncodeUnicode2(this.responseText); // encode a string
+    preEl.innerHTML = encodedData;
+    pre2El.innerHTML = encodedData;
+
 }
 
 var linkEl = document.getElementById('link');
